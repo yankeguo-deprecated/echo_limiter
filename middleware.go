@@ -2,7 +2,6 @@ package echo_limiter
 
 import (
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
 )
 
 const (
@@ -14,19 +13,9 @@ func GetAvailable(ctx echo.Context) (val int64, ok bool) {
 	return
 }
 
-type Options struct {
-	Skipper middleware.Skipper
-}
-
-func New(l Limiter, opts Options) echo.MiddlewareFunc {
-	if opts.Skipper == nil {
-		opts.Skipper = middleware.DefaultSkipper
-	}
+func New(l Limiter) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(ctx echo.Context) error {
-			if opts.Skipper(ctx) {
-				return next(ctx)
-			}
 			l.Take()
 			defer l.Return()
 			ctx.Set(ContextKeyAvailable, l.Available())

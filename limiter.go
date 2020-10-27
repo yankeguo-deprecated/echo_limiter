@@ -27,7 +27,7 @@ func (b *fixedBucketLimiter) Return() {
 	b.tokens <- struct{}{}
 }
 
-func NewFixedBucketLimiter(capacity int64) Limiter {
+func FixedBucketLimiter(capacity int64) Limiter {
 	tokens := make(chan struct{}, capacity)
 	for i := int64(0); i < capacity; i++ {
 		tokens <- struct{}{}

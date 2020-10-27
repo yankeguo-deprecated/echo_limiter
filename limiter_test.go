@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-func TestNewFixedBucketLimiter(t *testing.T) {
-	l := NewFixedBucketLimiter(2)
+func TestFixedBucketLimiter(t *testing.T) {
+	l := FixedBucketLimiter(2)
 	l.Take()
 	require.Equal(t, int64(1), l.Available())
 	l.Take()
